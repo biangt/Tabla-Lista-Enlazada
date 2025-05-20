@@ -9,7 +9,7 @@ public class Main {
         int opcion = 0;
         String clave;
         boolean salir = false;
-        TablaDispersa tabla = new TablaDispersa();
+        TablaDispersaEnlazada tabla = new TablaDispersaEnlazada();
             while (!salir) {
                 System.out.println("-------------------------------");
                 System.out.println("             TAREAS            ");

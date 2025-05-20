@@ -1,12 +1,12 @@
 package org.example;
 
-public class TablaDispersa {
+public class TablaDispersaEnlazada {
     private final int tamTabla=101;
     private Tarea [] tabla;
     private int numElementos;
     private double factorCarga;
 
-    public TablaDispersa (){ //inicializamos variables
+    public TablaDispersaEnlazada (){ //inicializamos variables
         tabla=new Tarea[tamTabla];
         for(int i=0;i<tamTabla;i++){
             tabla[i]=null;
