@@ -2,16 +2,14 @@ package org.example;
 
 public class TablaDispersaEnlazada {
     private final int tamTabla=101;
-    private Tarea [] tabla;
+    private Nodo [] tabla;
     private int numElementos;
     private double factorCarga;
 
     public TablaDispersaEnlazada (){ //inicializamos variables
-        tabla=new Tarea[tamTabla];
+        tabla=new Nodo[tamTabla];
         for(int i=0;i<tamTabla;i++){
             tabla[i]=null;
-
-            factorCarga=0.0;
             numElementos=0;
         }
     }
@@ -34,37 +32,15 @@ public class TablaDispersaEnlazada {
         double posicion = clave*R;
         posicion = posicion - Math.floor(posicion);
         posicionFinal = (int) (posicion * tamTabla);
-
-        //Resuelvo colisión con EXPLORACION CUADRÁTICA
-        while (tabla[posicionFinal]!= null && !tabla[posicionFinal].getId().equals(id)){ //si la posicion en la tabla no está vacía y es igual a un valor que ya existe
-
-            i++;
-            posicionFinal = posicionFinal + i*i;
-            posicionFinal = posicionFinal % tamTabla;  // considera el array como circular
-        }
-
-        // Si se recorrió toda la tabla y no hay espacio, devuelve -1
-        if (i >= tamTabla) {
-            return -1;
-        }
-        return posicionFinal;
     }
 
     //INSERTAR TAREA
-    public boolean insertar(Tarea tarea){ //tiene que ser booleano porque si no inserta coloca false
-        int posicion;
-        posicion = direccion(tarea.getId()); //llamo al método para conseguir la posición;
-
-        if (posicion == -1) {
-            return false; // no encontró espacio
-        }
-        tabla[posicion] = tarea; // insertar si encontró posición válida
-        System.out.println("posicion: " + posicion);//--------------------------
+    public boolean insertar(Registro reg) { //reg puede ser una notita o una tarea
+        int posicion = direccion(reg.getId()); //obtiene la posicion
+        Nodo nuevo = new Nodo(reg); //Esto es como poner el objeto r (Tarea o Notita) dentro de un nodo.
+        nuevo.setSiguiente(tabla[posicion]); //Esto apunta el nuevo nodo hacia el primero que ya había, si es que había uno.
+        tabla[posicion] = nuevo; //ahora el primer nodo en esta posición es el nuevo que acabo de meter
         numElementos++;
-        factorCarga = (double)(numElementos)/tamTabla; //actualizamos el factor de carga cada que insertamos
-        if (factorCarga > 0.5) {
-            System.out.println("\n¡Factor de carga supera el 50%!" + " Conviene aumentar el tamaño.");
-        }
         return true;
     }
 
@@ -91,5 +67,3 @@ public class TablaDispersaEnlazada {
             tabla[posicion].setEsAlta(false);
     }
 }
-
-
