@@ -30,8 +30,9 @@ public class TablaDispersaEnlazada {
         long clave = transformaCadena(id);
         int posicionFinal, i=0;
         double posicion = clave*R;
-        posicion = posicion - Math.floor(posicion);
+        posicion = posicion - Math.floor(posicion); //el math floor es para sacar el decimal
         posicionFinal = (int) (posicion * tamTabla);
+        return posicionFinal;
     }
 
     //INSERTAR TAREA
@@ -45,25 +46,30 @@ public class TablaDispersaEnlazada {
     }
 
     //BUSCAR TAREA
-    public Tarea buscar(String id) {
-        Tarea tarea; //una tarea de Tarea
-        int posicion;
-        posicion = direccion(id); //obtengo posicion de la tarea
-        tarea = tabla[posicion];
-        if (tarea != null) { //si la tarea no es null
-            if (!tarea.getEsAlta()) { //y si no está dadaa de baja (esAlta=false)
-                tarea = null;
+    public Registro buscar(String id) {
+        int posicion = direccion(id);
+        Nodo actual = tabla[posicion];
+
+        while (actual != null) {
+            if (actual.getDato().getId().equals(id) && actual.getDato().getEsAlta()) {
+                return actual.getDato();
             }
+            actual = actual.sgte;
         }
-        return tarea;
+        return null;
     }
 
     //ELIMINAR TAREA
-    public void eliminar(String id)
-    {
-        int posicion;
-        posicion = direccion(id);
-        if (tabla[posicion] != null)
-            tabla[posicion].setEsAlta(false);
+    public void eliminar(String id) {
+        int posicion = direccion(id);
+        Nodo actual = tabla[posicion];
+
+        while (actual != null) {
+            if (actual.getDato().getId().equals(id)) {
+                actual.getDato().setEsAlta(false);
+                return;
+            }
+            actual = actual.sgte;
+        }
     }
 }
